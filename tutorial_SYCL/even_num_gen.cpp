@@ -6,8 +6,8 @@ class evenNumberGenerator;
 
 int main(int, char **)
 {
-    int a[LENGTH] = {0.0};
-    int k = 2.0;
+    int a[LENGTH] = {0};
+    int k = 2;
 
     cl::sycl::default_selector device_selector;
 
