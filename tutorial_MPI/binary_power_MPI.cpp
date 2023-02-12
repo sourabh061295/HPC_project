@@ -1,28 +1,28 @@
 #include <mpi.h>
 #include <iostream>
-#include <SYCL/sycl.hpp>
+// #include <SYCL/sycl.hpp>
 
 #define LENGTH 20
 
-class binaryPower;
+// class binaryPower;
 
-void binaryPowerKernel(sycl::queue q, int *off, int *arr, int len)
-{
-    sycl::default_selector device_selector;
-    sycl::queue queue(device_selector);
-    {
-        auto a_sycl = sycl::buffer{&arr[(*off)], sycl::range{len}};
+// void binaryPowerKernel(sycl::queue q, int *off, int *arr, int len)
+// {
+//     sycl::default_selector device_selector;
+//     sycl::queue queue(device_selector);
+//     {
+//         auto a_sycl = sycl::buffer{&arr[(*off)], sycl::range{len}};
 
-        q.submit([&](sycl::handler &cgh)
-                 {
-            auto a_acc = a_sycl.get_access<sycl::access::mode::read_write>(cgh);
+//         q.submit([&](sycl::handler &cgh)
+//                  {
+//             auto a_acc = a_sycl.get_access<sycl::access::mode::read_write>(cgh);
 
-            cgh.parallel_for<class binaryPower>(sycl::range<1>{len}, [=](sycl::id<1> id) {
-                a_acc[id] = (1 << (id + (*off)));
-            }); });
-    }
-    *off = (*off) + len;
-}
+//             cgh.parallel_for<class binaryPower>(sycl::range<1>{len}, [=](sycl::id<1> id) {
+//                 a_acc[id] = (1 << (id + (*off)));
+//             }); });
+//     }
+//     *off = (*off) + len;
+// }
 
 int main()
 {
