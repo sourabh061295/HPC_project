@@ -6,7 +6,8 @@ class evenNumberGenerator;
 
 int main(int, char **)
 {
-    int a[LENGTH] = {0};
+    std::vector a(LENGTH);
+    a[0] = 0;
     int k = 2;
 
     cl::sycl::default_selector device_selector;
@@ -16,8 +17,8 @@ int main(int, char **)
               << queue.get_device().get_info<cl::sycl::info::device::name>()
               << "\n";
     {
-        auto a_sycl = cl::sycl::buffer<int, 1>(&a, cl::sycl::range<1>(LENGTH));
-        auto k_sycl = cl::sycl::buffer<int, 1>(&k, cl::sycl::range<1>(1));
+        cl::sycl::buffer a_sycl(&a);
+        cl::sycl::buffer k_sycl(&k);
 
         queue.submit([&](cl::sycl::handler &cgh)
                      {
@@ -25,7 +26,8 @@ int main(int, char **)
             auto k_acc = k_sycl.get_access<cl::sycl::access::mode::read>(cgh);
 
             cgh.parallel_for<class evenNumberGenerator>(cl::sycl::range<1>{LENGTH}, [=](cl::sycl::id<1> id) {
-                a_acc[id] = a_acc[id - 1] + k_acc[0];
+                int i = id.get_global(0);
+                a_acc[i] = a_acc[i - 1] + k_acc[0];
             }); });
     }
 
