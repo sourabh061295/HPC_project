@@ -1,6 +1,6 @@
 #include <mpi.h>
 #include <iostream>
-// #include <SYCL/sycl.hpp>
+#include <SYCL/sycl.hpp>
 
 #define LENGTH 20
 
