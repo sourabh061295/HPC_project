@@ -8,16 +8,19 @@ class binaryPower;
 
 void binaryPowerKernel(sycl::queue q, int *off, int *arr, int len)
 {
-    auto a_sycl = sycl::buffer{&arr[(*off)], sycl::range{len}};
+    sycl::default_selector device_selector;
+    sycl::queue queue(device_selector);
+    {
+        auto a_sycl = sycl::buffer{&arr[(*off)], sycl::range{len}};
 
-    q.submit([&](sycl::handler &cgh)
-             {
-        auto a_acc = a_sycl.get_access<sycl::access::mode::read_write>(cgh);
+        q.submit([&](sycl::handler &cgh)
+                 {
+            auto a_acc = a_sycl.get_access<sycl::access::mode::read_write>(cgh);
 
-        cgh.parallel_for<class binaryPower>(sycl::range<1>{len}, [=](sycl::id<1> id) {
-            a_acc[id] = (1 << (id + (*off)));
-        }); });
-
+            cgh.parallel_for<class binaryPower>(sycl::range<1>{len}, [=](sycl::id<1> id) {
+                a_acc[id] = (1 << (id + (*off)));
+            }); });
+    }
     *off = (*off) + len;
 }
 
@@ -29,9 +32,6 @@ int main()
     int a[LENGTH] = {0};
     int num_proc = 4;
     int len_per_proc = LENGTH / num_proc;
-
-    sycl::default_selector device_selector;
-    sycl::queue queue(device_selector);
 
     MPI_Init(NULL, NULL);
 
