@@ -6,8 +6,7 @@ class evenNumberGenerator;
 
 int main(int, char **)
 {
-    int a[LENGTH];
-    a[0] = 0;
+    int a[LENGTH] = {0};
     int k = 2;
 
     sycl::default_selector device_selector;
@@ -27,7 +26,7 @@ int main(int, char **)
             auto k_acc = k_sycl.get_access<sycl::access::mode::read>(cgh);
 
             cgh.parallel_for<class evenNumberGenerator>(sycl::range<1>{LENGTH}, [=](sycl::id<1> id) {
-                a_acc[id] = k_acc[0];
+                a_acc[id] += k_acc[0];
             }); });
     }
 
