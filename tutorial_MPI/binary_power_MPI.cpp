@@ -54,6 +54,7 @@ int main()
     }
 
     MPI_Send(&offset, 1, MPI_INT, (rank + 1) % size, 0, MPI_COMM_WORLD);
+    std::cout << "Process " << rank << " is sending an offset " << offset << " to process " << (rank + 1) % size << std::endl;
 
     if (rank == 0)
     {
