@@ -27,7 +27,7 @@ int main(int, char **)
             auto k_acc = k_sycl.get_access<sycl::access::mode::read>(cgh);
 
             cgh.parallel_for<class evenNumberGenerator>(sycl::range<1>{LENGTH}, [=](sycl::id<1> id) {
-                a_acc[id] = a_acc[id - 1] + k_acc[0];
+                a_acc[id] = a_acc[id] + k_acc[0];
             }); });
     }
 
@@ -37,6 +37,8 @@ int main(int, char **)
     {
         std::cout << a[i] << " ,";
     }
+
+    std::cout << endl;
 
     return 0;
 }
