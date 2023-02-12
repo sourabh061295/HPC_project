@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-#define MATSIZE 50
+#define MATSIZE 20
 #define NRA MATSIZE   /* number of rows in matrix A */
 #define NCA MATSIZE   /* number of columns in matrix A */
 #define NCB MATSIZE   /* number of columns in matrix B */
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
         {
             cout << endl;
             for (j = 0; j < NCB; j++)
-                cout << c[i][j];
+                cout << c[i][j] << " ";
         }
         cout << "\n******************************************************\n";
 
