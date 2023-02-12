@@ -38,7 +38,7 @@ int main(int, char **)
         std::cout << a[i] << " ,";
     }
 
-    std::cout << endl;
+    std::cout << std::endl;
 
     return 0;
 }
