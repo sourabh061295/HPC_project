@@ -49,7 +49,7 @@ int main()
         // binaryPowerKernel(queue, offset, a, len_per_proc);
         std::cout << "Perform the kernel here" << std::endl;
         offset += len_per_proc;
-        std::cout << "Process " << rank << " received an offset " << offset << " from process " << size - 1 << std::endl;
+        std::cout << "Process " << rank << " received an offset " << offset << " from process " << rank - 1 << std::endl;
         std::cout << "Process " << rank << " updated the offset to " << offset << std::endl;
     }
 
@@ -59,16 +59,13 @@ int main()
     {
         MPI_Recv(&offset, 1, MPI_INT, size - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         std::cout << "Process " << rank << " received an offset " << offset << " from process " << size - 1 << std::endl;
+        std::cout << "A array:" << std::endl;
+        for (int i = 0; i < LENGTH; i++)
+        {
+            std::cout << a[i] << " ,";
+        }
+        std::cout << std::endl;
     }
-
-    std::cout << "A array:" << std::endl;
-
-    for (int i = 0; i < LENGTH; i++)
-    {
-        std::cout << a[i] << " ,";
-    }
-
-    std::cout << std::endl;
 
     MPI_Finalize();
     return 0;
