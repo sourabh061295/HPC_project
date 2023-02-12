@@ -16,7 +16,7 @@ int main(int, char **)
               << queue.get_device().get_info<cl::sycl::info::device::name>()
               << "\n";
     {
-        auto a_sycl = cl::sycl::buffer<int, 1>(&a, cl::sycl::range<1>(LENGTH));
+        auto a_sycl = cl::sycl::buffer<int, 1>(&a, cl::sycl::range<1>(1, LENGTH));
         auto k_sycl = cl::sycl::buffer<int, 1>(&k, cl::sycl::range<1>(1));
 
         queue.submit([&](cl::sycl::handler &cgh)
