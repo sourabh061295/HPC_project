@@ -48,8 +48,8 @@ int main()
         MPI_Recv(&offset, 1, MPI_INT, rank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         // binaryPowerKernel(queue, offset, a, len_per_proc);
         std::cout << "Perform the kernel here" << std::endl;
-        offset += len_per_proc;
         std::cout << "Process " << rank << " received an offset " << offset << " from process " << rank - 1 << std::endl;
+        offset += len_per_proc;
         std::cout << "Process " << rank << " updated the offset to " << offset << std::endl;
     }
 
