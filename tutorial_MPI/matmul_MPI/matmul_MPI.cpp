@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-#define MATSIZE 500
+#define MATSIZE 50
 #define NRA MATSIZE   /* number of rows in matrix A */
 #define NCA MATSIZE   /* number of columns in matrix A */
 #define NCB MATSIZE   /* number of columns in matrix B */
@@ -13,7 +13,7 @@
 
 using namespace std;
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
     int numtasks,              /* number of tasks in partition */
         taskid,                /* a task identifier */
@@ -25,9 +25,9 @@ int main(int argc, char* argv[])
         averow, extra, offset, /* used to determine rows sent to each worker */
         i, j, k, rc = 0;       /* misc */
 
-    double a[NRA][NCA], /* matrix A to be multiplied */
-        b[NCA][NCB],    /* matrix B to be multiplied */
-        c[NRA][NCB];    /* result matrix C */
+    int a[NRA][NCA], /* matrix A to be multiplied */
+        b[NCA][NCB], /* matrix B to be multiplied */
+        c[NRA][NCB]; /* result matrix C */
 
     MPI_Status status;
 
@@ -68,11 +68,11 @@ int main(int argc, char* argv[])
         for (dest = 1; dest <= numworkers; dest++)
         {
             rows = (dest <= extra) ? averow + 1 : averow;
-            // cout << "Sending " << rows << " to task " << dest << " offset = " << offset << endl;
+            cout << "Sending " << rows << " to task " << dest << " offset = " << offset << endl;
             MPI_Send(&offset, 1, MPI_INT, dest, mtype, MPI_COMM_WORLD);
             MPI_Send(&rows, 1, MPI_INT, dest, mtype, MPI_COMM_WORLD);
-            MPI_Send(&a[offset][0], rows * NCA, MPI_DOUBLE, dest, mtype, MPI_COMM_WORLD);
-            MPI_Send(&b, NCA * NCB, MPI_DOUBLE, dest, mtype, MPI_COMM_WORLD);
+            MPI_Send(&a[offset][0], rows * NCA, MPI_INT, dest, mtype, MPI_COMM_WORLD);
+            MPI_Send(&b, NCA * NCB, MPI_INT, dest, mtype, MPI_COMM_WORLD);
             offset = offset + rows;
         }
 
@@ -83,22 +83,21 @@ int main(int argc, char* argv[])
             source = i;
             MPI_Recv(&offset, 1, MPI_INT, source, mtype, MPI_COMM_WORLD, &status);
             MPI_Recv(&rows, 1, MPI_INT, source, mtype, MPI_COMM_WORLD, &status);
-            MPI_Recv(&c[offset][0], rows * NCB, MPI_DOUBLE, source, mtype, MPI_COMM_WORLD, &status);
-            // cout << "Received results from task " << source << endl;
+            MPI_Recv(&c[offset][0], rows * NCB, MPI_INT, source, mtype, MPI_COMM_WORLD, &status);
+            cout << "Received results from task " << source << endl;
         }
 
         /* Print results */
-        
+
         cout << "******************************************************\n";
         cout << "Result Matrix:\n";
-        for (i=0; i<NRA; i++)
+        for (i = 0; i < NRA; i++)
         {
-           cout << endl;
-           for (j=0; j<NCB; j++)
-              cout << c[i][j];
+            cout << endl;
+            for (j = 0; j < NCB; j++)
+                cout << c[i][j];
         }
         cout << "\n******************************************************\n";
-        
 
         /* Measure finish time */
         double finish = MPI_Wtime();
@@ -111,8 +110,8 @@ int main(int argc, char* argv[])
         mtype = FROM_MASTER;
         MPI_Recv(&offset, 1, MPI_INT, MASTER, mtype, MPI_COMM_WORLD, &status);
         MPI_Recv(&rows, 1, MPI_INT, MASTER, mtype, MPI_COMM_WORLD, &status);
-        MPI_Recv(&a, rows * NCA, MPI_DOUBLE, MASTER, mtype, MPI_COMM_WORLD, &status);
-        MPI_Recv(&b, NCA * NCB, MPI_DOUBLE, MASTER, mtype, MPI_COMM_WORLD, &status);
+        MPI_Recv(&a, rows * NCA, MPI_INT, MASTER, mtype, MPI_COMM_WORLD, &status);
+        MPI_Recv(&b, NCA * NCB, MPI_INT, MASTER, mtype, MPI_COMM_WORLD, &status);
 
         for (k = 0; k < NCB; k++)
             for (i = 0; i < rows; i++)
@@ -124,7 +123,7 @@ int main(int argc, char* argv[])
         mtype = FROM_WORKER;
         MPI_Send(&offset, 1, MPI_INT, MASTER, mtype, MPI_COMM_WORLD);
         MPI_Send(&rows, 1, MPI_INT, MASTER, mtype, MPI_COMM_WORLD);
-        MPI_Send(&c, rows * NCB, MPI_DOUBLE, MASTER, mtype, MPI_COMM_WORLD);
+        MPI_Send(&c, rows * NCB, MPI_INT, MASTER, mtype, MPI_COMM_WORLD);
     }
 
     MPI_Finalize();
