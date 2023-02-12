@@ -6,8 +6,8 @@ class evenNumberGenerator;
 
 int main(int, char **)
 {
-    int a[LENGTH] = {0};
-    int k = 2;
+    cl::sycl::float4 a[LENGTH] = {0.0};
+    cl::sycl::float4 k = 2.0;
 
     cl::sycl::default_selector device_selector;
 
@@ -16,8 +16,8 @@ int main(int, char **)
               << queue.get_device().get_info<cl::sycl::info::device::name>()
               << "\n";
     {
-        auto a_sycl = cl::sycl::buffer<int, 1>(&a, cl::sycl::range<1>{LENGTH});
-        auto k_sycl = cl::sycl::buffer<int, 1>(&k, cl::sycl::range<1>(1));
+        cl::sycl::buffer<cl::sycl::float4, 1> a_sycl(&a, cl::sycl::range<1>{LENGTH});
+        cl::sycl::buffer<cl::sycl::float4, 1> k_sycl(&k, cl::sycl::range<1>(1));
 
         queue.submit([&](cl::sycl::handler &cgh)
                      {
