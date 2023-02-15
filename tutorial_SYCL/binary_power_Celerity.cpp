@@ -1,6 +1,5 @@
 #include <iostream>
-#include <celerity.h>
-
+#include <celerity/celerity.h>
 #define LENGTH 20
 
 class binaryPower;
