@@ -2,7 +2,7 @@
 #include <SYCL/sycl.hpp>
 #define LENGTH 20
 
-class evenNumberGenerator;
+class binaryPower;
 
 int main(int, char **)
 {
@@ -25,7 +25,7 @@ int main(int, char **)
             auto a_acc = a_sycl.get_access<sycl::access::mode::read_write>(cgh);
             auto k_acc = k_sycl.get_access<sycl::access::mode::read>(cgh);
 
-            cgh.parallel_for<class evenNumberGenerator>(sycl::range<1>{LENGTH}, [=](sycl::id<1> id) {
+            cgh.parallel_for<class binaryPower>(sycl::range<1>{LENGTH}, [=](sycl::id<1> id) {
                 a_acc[id] = (1 << id);
             }); });
     }
