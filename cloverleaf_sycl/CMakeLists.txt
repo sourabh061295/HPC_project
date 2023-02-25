@@ -127,7 +127,7 @@ target_compile_options(clover_leaf PUBLIC "$<$<CONFIG:Debug>:${DEBUG_OPTIONS}>")
 target_link_options(clover_leaf PUBLIC LINKER:${CXX_EXTRA_LINKER_FLAGS})
 
 if (NOT ${SYCL_RUNTIME} STREQUAL "DPCPP")
-    add_sycl_to_celerity(
+add_celerity_to_target(
             TARGET clover_leaf
             SOURCES ${SOURCES}) # must be the last
 endif ()
