@@ -45,16 +45,16 @@
 
 using namespace cl;
 
-using sycl::accessor;
-using sycl::buffer;
-using sycl::handler;
-using sycl::id;
-using sycl::queue;
-using sycl::range;
+using cl::sycl::accessor;
+using cl::sycl::buffer;
+using cl::sycl::handler;
+using cl::sycl::id;
+using cl::sycl::queue;
+using cl::sycl::range;
 
-constexpr sycl::access::mode R = sycl::access::mode::read;
-constexpr sycl::access::mode W = sycl::access::mode::write;
-constexpr sycl::access::mode RW = sycl::access::mode::read_write;
+constexpr cl::sycl::access::mode R = cl::sycl::access::mode::read;
+constexpr cl::sycl::access::mode W = cl::sycl::access::mode::write;
+constexpr cl::sycl::access::mode RW = cl::sycl::access::mode::read_write;
 
 typedef std::chrono::time_point<std::chrono::system_clock> timepoint;
 
